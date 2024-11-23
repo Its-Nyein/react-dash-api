@@ -11,10 +11,11 @@ datasource db {
 }
 
 model Product {
-  id       Int     @id @default(autoincrement())
-  name     String
-  category String
-  price    Decimal
-  stock    Int
-  sales    Int
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String
+  price     Decimal
+  stock     Int
+  sales     Int
+  createdAt DateTime @default(now())
 }
