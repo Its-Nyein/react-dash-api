@@ -19,7 +19,7 @@ router.get("/products", async (req, res) => {
 router.post("/products", async (req, res) => {
   const { name, category, price, stock, sales } = req.body;
 
-  if (!name || !category || !price || !stock || !sales) {
+  if (!name || !category) {
     return res.status(400).json({ msg: "All fields are required" });
   }
 
@@ -45,8 +45,6 @@ router.post("/products", async (req, res) => {
 router.put("/products/:id", async (req, res) => {
   const { id } = req.params;
   const { name, category, price, stock, sales } = req.body;
-
-  console.log("Incoming data:", req.body);
 
   try {
     const data = await prisma.product.update({
@@ -80,6 +78,21 @@ router.delete("/products/:id", async (req, res) => {
   });
 
   res.sendStatus(204);
+});
+
+router.get("/products/search", async (req, res) => {
+  const { q } = req.query;
+
+  const data = await prisma.product.findMany({
+    where: {
+      name: {
+        contains: q,
+      },
+    },
+    take: 20,
+  });
+
+  res.json(data);
 });
 
 export default router;
